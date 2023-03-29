@@ -1,6 +1,8 @@
 from characters import *
 import os
 
+# 지인 push&pull test
+
 
 def input_hero_name() -> str:
     input('이름을 입력해 주세요')
