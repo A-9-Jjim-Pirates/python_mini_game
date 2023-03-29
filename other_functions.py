@@ -89,6 +89,7 @@ def clear_all():
 print("전투 종료!")
 clear_all()
 # 보상 뿌리는 화면
+
 print("")
 
 # def choice1():
@@ -123,3 +124,4 @@ def market():
         print("다음 스테이지로 넘어갑니다")
         time_sleep()
         clear_all()
+
