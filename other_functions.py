@@ -49,3 +49,4 @@ def clear_all(self):
 # 전투 종료
 
 # 보상 뿌리는 화면
+print("test")
