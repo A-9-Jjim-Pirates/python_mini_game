@@ -8,12 +8,16 @@ player_name = input_hero_name()
 
 # 내 직업 정해서 캐릭터 만들기
 hero_entities = []
-hero_entities[0] = hero_make(player_name)
+list_of_class = list(Hero.__subclasses__())  # [archer,swordman, wizard]
+acrhonym_to_class = {}
+for class_ in list_of_class:
+    acrhonym_to_class[class_.__name__[0]] = class_
+hero_entities[0] = hero_make(player_name, acrhonym_to_class)
 # 화면 전환
 
 # 동료 캐릭터 정하기
-hero_entities[1] = hero_make('동료1')
-hero_entities[2] = hero_make('동료2')
+hero_entities[1] = hero_make('동료1', list_of_class)
+hero_entities[2] = hero_make('동료2', list_of_class)
 # 화면 전환
 
 # 던전 입장(화면 전환)
