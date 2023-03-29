@@ -4,6 +4,7 @@ from other_functions import *
 
 # 내 이름 짓기
 player_name = input_hero_name()
+
 # 화면전환
 
 # 내 직업 정해서 캐릭터 만들기
