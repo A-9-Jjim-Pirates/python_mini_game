@@ -1,12 +1,12 @@
 import random
 monster_wikipedia = [
-    {'monster_class_name': 'slime', 'hp': 45,
+    {'monster_class_name': 'slime', 'hp': 40,
         'power': 5, 'magic_power': 5, 'agility': 6},
-    {'monster_class_name': 'goblin', 'hp': 60,
+    {'monster_class_name': 'goblin', 'hp': 50,
         'power': 7, 'magic_power': 5, 'agility': 8},
-    {'monster_class_name': 'orc', 'hp': 65,
+    {'monster_class_name': 'orc', 'hp': 60,
         'power': 12, 'magic_power': 0, 'agility': 5},
-    {'monster_class_name': 'Lizardman', 'hp': 70,
+    {'monster_class_name': 'Lizardman', 'hp': 65,
         'power': 13, 'magic_power': 9, 'agility': 5},
 
 ]
@@ -32,8 +32,8 @@ class Character:
 
     def attack(self, other):
         print(f'{self.name}이(가) {other.name}에게 공격!')
-
-        damage = random.randint(int(self.power*0.8), int(self.power*1.2))
+        adjustment = int(self.power*0.2)
+        damage = random.randint(self.power-adjustment, self.power+adjustment)
         print(f'{damage}의 데미지!')
         other.hp = max(other.hp - damage, 0)
 
@@ -60,8 +60,9 @@ class Hero(Character):
         if not self.hero_mana_check():
             print("아차! 마나가 부족합니다....공격실패!")
             return False
-        damage = random.randint(int(self.magic_power*0.8),
-                                int(self.magic_power*1.2))
+        adjustment = int(self.magic_power*0.2)
+        damage = random.randint(self.magic_power-adjustment,
+                                self.magic_power+adjustment)
         damage = max(damage-other.magic_power, 0)
         other.hp = max(other.hp - damage, 0)
         print(f'{self.name}이(가) {other.name}({other.monster_class_name})에게 마법 공격!')
@@ -72,17 +73,23 @@ class Hero(Character):
         return f"{self.hp} / {self.max_hp}", f"{self.mana} / {self.max_mana}"
 
     def hero_level_up(self):
+        print(f"{self.name},{self.__class__.__name__}님! 레벨업하셨습니다!")
         self.level += 1
+        print(f"hp: {self.max_hp} ->", end="\t")
         self.max_hp += random.randint(10, 20)
+        print(f"hp: {self.max_hp}")
+        print(f"power: {self.power} ->", end="\t")
         self.power += random.randint(4, 6)
+        print(f"power: {self.power}")
+        print(f"magic power: {self.magic_power} ->", end="\t")
         self.magic_power += random.randint(4, 6)
+        print(f"magic power: {self.magic_power}")
+        print(f"mana: {self.mana} ->", end="\t")
         self.max_mana += random.randint(5, 15)
+        print(f"mana: {self.mana}")
+        print(f"agility: {self.agility} ->", end="\t")
         self.agility += random.randint(1, 3)
-        # self.max_hp += random.randint(100, 200)
-        # self.power += random.randint(30, 50)
-        # self.magic_power += random.randint(30, 50)
-        # self.max_mana += random.randint(50, 150)
-        # self.agility += random.randint(10, 30)
+        print(f"agility: {self.agility}")
 
 
 # 직업이랑 개네들 특수 능력 하기.
@@ -103,7 +110,7 @@ class SwordMan(Hero):     # 전사 # 분기문 깔끔하게 바꿀것
             return False
         dice = random.randint(1, 20)
         # 1-10까지 있는 주사위를 던졌을 때 나온 숫자와 '9-레벨'과 비교해서 크거나 같으면 스킬 발동되는것
-        if dice >= max(18-self.level, 16):
+        if dice >= max(19-self.level, 17):
             print(f' 즉살 검기를 목에 맞췄다!')
             other.hp = 0
             print(f' {other.name}즉사!')
@@ -128,19 +135,17 @@ class Wizard(Hero):     # 마법사
             return
         if other.hp == 0:  # hp가 0이면
             return  # 실행하지 않는다
-        if dice := random.randint(1, 6) >= 5:
-            print(f'특수 효과 발동! 몬스터의 마법공격/저항이 약해졌다.')
-            other.power = max(2, other.magic_power - (1+self.level))
-        if dice > 2:
-            print(f'특수 효과 발동! 몬스터의 힘이 약해졌다.')
-            other.power = max(2, other.power - (1+self.level))
+        if dice := random.randint(1, 6+(self.magic_power//5)) >= 4:
+            print(f'특수 효과 발동! 몬스터의 마법공격/저항과 힘이 약해졌다.')
+            other.power = max(2, other.magic_power - 2*(1+self.level))
+            other.power = max(2, other.power - 2*(1+self.level))
 
 
 class Monster(Character):  # 몬스터
     def __init__(self, name, hp, power, magic_power, agility, monster_class_name):
         super().__init__(name, hp, power, magic_power, agility)
         self.monster_class_name = monster_class_name
-        self.reward = random.randint(0, 100)
+        self.reward = random.randint(80, 150)
 
 
 boss_names = ['Baal', 'Diablo', 'Rucifer', 'Haster']

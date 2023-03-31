@@ -30,20 +30,21 @@ def main():
     total_reward = {0: 0}
     for i in range(5):
         # 전투 상황 객체 만들기
-        battle = BattleScene(hero_entities)
+        battle = BattleScene(hero_entities, i)
         # 전투 상황 객체 안의 함수가 작동되면서 전투가 진행되고 결과(리워드) 반환
         battle_reward = battle.battle_scene_turn()
-        print(f"전리품으로 {battle_reward} G를 얻었습니다.")
-        total_reward[0] += battle_reward
-        print(f"소지금: {total_reward[0]} G")
-        # 패배했으면 게임 끝
         if battle_reward == -1:
             if choice_play_or_exit(True):  # gameover_and_retry 화면 출력
                 return True  # gameover ,no try again
             return False  # gameover, try again
+        print(f"전리품으로 {battle_reward} G를 얻었습니다.")
+        total_reward[0] += battle_reward
+        print(f"소지금: {total_reward[0]} G")
+        # 패배했으면 게임 끝
         give_reward()  # 화면 표시
         market(hero_entities, total_reward)  # 아이템 사기 진입
         # 다음전투로 진행
+        print("다음 층으로갑니다. 몬스터가 조금씩 강해지고있습니다...")
     # 반복문 종료
 
     # 보스전 시작: 전투상황 객체에서 기존과 다른 함수 하나 실행(보스전 전용)
@@ -56,6 +57,7 @@ def main():
         return False  # gameover, try again
     total_reward[0] += result
     print("해피엔딩")
+    print(f"당신의 클리어 점수는 {total_reward[0]}입니다!!")
     if choice_play_or_exit(False):  # game_win_and_retry 화면 출력
         return True  # win ,no try again
     return False  # win, try again

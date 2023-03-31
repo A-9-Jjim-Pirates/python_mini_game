@@ -1,6 +1,7 @@
 from characters import *
 import os
 import time
+import random
 tab = '\t'
 notab = ''
 # hp, power, magic_power, agility, mana
@@ -184,15 +185,24 @@ def choice_one(hero_list, reward):
     while True:
         print("누가 사먹을까요?")
         for key_, entity in hero_list.items():
-            print(f"{key_}:{entity.name} the {entity.__class__.__name__}")
+            print(f"{key_}: {entity.name} the {entity.__class__.__name__}")
+        print('4: 돌아가기')
         select = input("숫자로 선택: ")
         if select in hero_list.keys():
             selected_hero = hero_list[select]
+            if selected_hero.hp == selected_hero.max_hp and selected_hero.mana == selected_hero.max_hp:
+                print("체력과 마나가 이미 꽉차있습니다!")
+                continue
             break
+        if select == '4':
+            clear_all()
+            return
         print('다시 입력하세요')
+        time.sleep(2)
+        clear_all()
 
     if reward[0] < 120:
-        print(f"돈이 없으므로({reward[0]} G) 다음 라운드로 갑니다")
+        print(f"돈이 없습니다!({reward[0]} G)")
         time_sleep()
         clear_all()
 
@@ -206,23 +216,106 @@ def choice_one(hero_list, reward):
         time_sleep()
         clear_all()
 
+
+def choice_two(hero_list, reward):
+    while True:
+        print("누가 사먹을까요?")
+        for key_, entity in hero_list.items():
+            print(f"{key_}:{entity.name} the {entity.__class__.__name__}")
+        print('4: 돌아가기')
+        select = input("숫자로 선택: ")
+        if select in hero_list.keys():
+            selected_hero = hero_list[select]
+            break
+
+        if select == '4':
+            clear_all()
+            return
+
+        print('다시 입력하세요')
+        time.sleep(2)
+        clear_all()
+    if reward[0] < 80:
+        print(f"돈이 없습니다!({reward[0]} G)")
+        time_sleep()
+        clear_all()
+
+    else:
+        reward[0] -= 80
+        selected_hero.magic_power = selected_hero.magic_power + 5
+        print(f"구매에 성공 했습니다! 남은 돈은 {reward[0]} G 입니다")
+        time_sleep()
+        print("마법공격력이 5 증가했습니다!")
+        time_sleep()
+        clear_all()
+
+
+def power_gambling(hero_list, reward):
+
+    while True:
+        print("누가 할건가요?")
+        for key_, entity in hero_list.items():
+            print(f"{key_}:{entity.name} the {entity.__class__.__name__}")
+        print('4: 돌아가기')
+        select = input("숫자로 선택: ")
+        if select in hero_list.keys():
+            selected_hero = hero_list[select]
+            break
+        if select == '4':
+            clear_all()
+            return
+        print('다시 입력하세요')
+        time.sleep(2)
+        clear_all()
+
+    if reward[0] < 100:
+        print(f"돈이 없습니다!({reward[0]} G)")
+        time_sleep()
+        clear_all()
+
+    else:
+        reward[0] -= 100
+        random_number = random.randint(-10, 10)
+        selected_hero.power = max(selected_hero.power+random_number, 5)
+        print(f"구매에 성공 했습니다! 남은 돈은 {reward[0]} G 입니다")
+        time_sleep()
+        print("복권을 긁습니다....")
+        time_sleep()
+        if random_number < 0:
+            print(f"공격력이 {abs(random_number)} 감소했습니다!")
+            print(f"당신의 공격력은 현재{selected_hero.power} 입니다!")
+
+        elif random_number > 0:
+            print(f"공격력이 {random_number} 증가했습니다!")
+            print(f"당신의 공격력은 현재{selected_hero.power} 입니다!")
+
+        else:
+            print("쯧쯧 한심하긴.. 이만 올라가!")
+
+        time_sleep()
+        clear_all()
+
 # 상점 만들기
 
 
 def market(hero_list, reward):
     print("어서 오세요! 던전 마켓에 오신 것을 환영합니다!")
+    print(f'소지금: {reward[0]}')
 
     while True:
-        hero_choice = input("파워엘릭서(체력,마나 회복)(120 G)를 구매하시겠습니까?(y/n)")
+        hero_choice = input(
+            "1.파워엘릭서(체력,마나 회복)(120 G) 2. 페레로로쉐(마법공격력5증가)(80 G) 3.복권(파워-10~10증가)(100G) 4. 나가기")
 
-        if hero_choice == "y":
+        if hero_choice == "1":
             choice_one(hero_list, reward)
-            break
 
-        elif hero_choice == "n":
-            time_sleep()
-            break
+        elif hero_choice == "2":
+            choice_two(hero_list, reward)
 
+        elif hero_choice == "3":
+            power_gambling(hero_list, reward)
+        elif hero_choice == "4":
+            break
         else:
             print("올바른 문자를 입력해주세요")
             continue
@@ -230,15 +323,3 @@ def market(hero_list, reward):
     print("다음 라운드로 넘어갑니다!")
     time_sleep()
     clear_all()
-
-    # 파워 도박하는 함수
-    # def power_gambling(hero_list):
-    #   print("당신의 파워가 랜덤으로 증가하거나 감소합니다.")
-    #   gambling_choice = input("하시겠습니까? (y/n) : ")
-    #   if gambling_choice == "y":
-    #       random_number = random.ranint(-10,+10)
-    #       hero_list["1"].power += random_number
-    #        print(f"{hero_list["1"].name}의 파워가 {random_number} 만큼 증가했습니다!")
-    #   else: print("알겠습니다")
-    #   print("다음 라운드로 넘어갑니다!")
-    #   time_sleep()
