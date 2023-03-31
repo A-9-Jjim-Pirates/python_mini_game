@@ -1,16 +1,5 @@
 from characters import *
 from other_functions import *
-monster_wikipedia = [
-    {'monster_class_name': 'slime', 'hp': 4,
-        'power': 5, 'magic_power': 5, 'agility': 6},
-    {'monster_class_name': 'goblin', 'hp': 6,
-        'power': 7, 'magic_power': 5, 'agility': 8},
-    {'monster_class_name': 'orc', 'hp': 10,
-        'power': 12, 'magic_power': 0, 'agility': 5},
-    {'monster_class_name': 'Lizardman', 'hp': 11,
-        'power': 13, 'magic_power': 8, 'agility': 4},
-
-]
 
 
 class BattleScene:
@@ -72,16 +61,20 @@ class BattleScene:
                 time.sleep(1)
 
             # 적 공격 순서
-            print('===적의 순서!===')
             for key_ in self.monster_list.keys():
+
                 if not self.hero_list:
                     break
 
                 target = random.choice(list(self.hero_list.keys()))
+                print('===적의 공격!!!===')
                 self.monster_list[key_].attack(self.hero_list[target])
                 # 히어로 죽었는지 확인
                 self.battle_scene_check_del_entity(target, self.hero_list)
-                time.sleep(0.5)
+                time.sleep(1)
+            time.sleep(1)
+            clear_all()
+
         if not self.monster_list:  # victory
             print("=====\n전투 승리!\n=====")  # 전투 승리 화면 출력
             # 레벨업 함수 불러오기

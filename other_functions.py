@@ -1,13 +1,9 @@
 from characters import *
 import os
 import time
-
+tab = '\t'
+notab = ''
 # hp, power, magic_power, agility, mana
-class_status_wikipedia = {
-    'A': {'hp': 100, 'power': 9, 'magic_power': 9, 'agility': 10, 'mana': 80},
-    'S': {'hp': 130, 'power': 11, 'magic_power': 5, 'agility': 5, 'mana': 80},
-    'W': {'hp': 70, 'power': 8, 'magic_power': 13, 'agility': 7, 'mana': 130}
-}
 
 
 # 클리어 올
@@ -32,9 +28,16 @@ def time_sleep():
 
 
 def input_hero_name() -> str:
-    hero_name = input('이름을 입력해 주세요:')
-    if not hero_name:
-        hero_name = "Hero"  # 사용자가 이름을 입력하지 않으면 default값으로 "Hero"를 사용한다.
+    while True:
+        hero_name = input('이름을 입력해 주세요:')
+        if len(hero_name) > 8:
+            print('8글자 이내로 정해주세요')
+            time.sleep(2)
+            clear_all()
+            continue
+        if not hero_name:
+            hero_name = "Hero"
+        break  # 사용자가 이름을 입력하지 않으면 default값으로 "Hero"를 사용한다.
     return hero_name
 
 # 직업선택
@@ -87,16 +90,17 @@ def random_name():
 
 # 던전 드가는 화면 표시
 def before_enter_battle(hero_list: dict, monster_list: dict):
-    print('던전에 입장합니다.')
+    print('다음 층으로 입장합니다... 전투 시작!')
     print("마음의 준비를 하세요!")
+
     # 1. 전투시 3:3 화면 표시
-    print(
-        f"{hero_list[1].name}      {monster_list['1'].monster_class_name}")
-    print(
-        f"{hero_list[2].name}  vs  {monster_list['2'].monster_class_name}")
-    print(
-        f"{hero_list[3].name}      {monster_list['3'].monster_class_name}")
-    time_sleep()
+    print('========== Heros \t   vs   \t Monsters ==========')
+    for i in range(1, 4):
+        hero = hero_list.get(str(i))
+        hero_name = str(hero.name if hero else '---')
+        print(
+            f"\t\t{hero_name}\t\t{tab if len(hero_name)<8 else notab}{monster_list.get(str(i)).monster_class_name}")
+    input('press enter to move on')
     clear_all()
 
 # hp, mp 출력
@@ -105,8 +109,7 @@ def before_enter_battle(hero_list: dict, monster_list: dict):
 def check_hero_and_monster_status(hero_list: dict, monster_list: dict):
     print('================================================')
     print('| Heroes\t| HP\t\t| Mana\t\t|')
-    tab = '\t'
-    notab = ''
+
     for entity in hero_list.values():
         show_hp, show_mana = entity.hero_check_status()
         print(
@@ -182,7 +185,7 @@ def choice_one(hero_list, reward):
         print("누가 사먹을까요?")
         for key_, entity in hero_list.items():
             print(f"{key_}:{entity.name} the {entity.__class__.__name__}")
-        select = int(input("숫자로 선택: "))
+        select = input("숫자로 선택: ")
         if select in hero_list.keys():
             selected_hero = hero_list[select]
             break

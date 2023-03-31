@@ -1,4 +1,20 @@
 import random
+monster_wikipedia = [
+    {'monster_class_name': 'slime', 'hp': 45,
+        'power': 5, 'magic_power': 5, 'agility': 6},
+    {'monster_class_name': 'goblin', 'hp': 60,
+        'power': 7, 'magic_power': 5, 'agility': 8},
+    {'monster_class_name': 'orc', 'hp': 65,
+        'power': 12, 'magic_power': 0, 'agility': 5},
+    {'monster_class_name': 'Lizardman', 'hp': 70,
+        'power': 13, 'magic_power': 9, 'agility': 5},
+
+]
+class_status_wikipedia = {
+    'A': {'hp': 100, 'power': 9, 'magic_power': 9, 'agility': 7, 'mana': 80},
+    'S': {'hp': 130, 'power': 11, 'magic_power': 5, 'agility': 5, 'mana': 80},
+    'W': {'hp': 70, 'power': 8, 'magic_power': 13, 'agility': 6, 'mana': 130}
+}
 
 
 class Character:
@@ -57,16 +73,16 @@ class Hero(Character):
 
     def hero_level_up(self):
         self.level += 1
-        # self.max_hp += random.randint(10, 20)
-        # self.power += random.randint(3, 5)
-        # self.magic_power += random.randint(3, 5)
-        # self.max_mana += random.randint(5, 15)
-        # self.agility += random.randint(1, 3)
-        self.max_hp += random.randint(100, 200)
-        self.power += random.randint(30, 50)
-        self.magic_power += random.randint(30, 50)
-        self.max_mana += random.randint(50, 150)
-        self.agility += random.randint(10, 30)
+        self.max_hp += random.randint(10, 20)
+        self.power += random.randint(4, 6)
+        self.magic_power += random.randint(4, 6)
+        self.max_mana += random.randint(5, 15)
+        self.agility += random.randint(1, 3)
+        # self.max_hp += random.randint(100, 200)
+        # self.power += random.randint(30, 50)
+        # self.magic_power += random.randint(30, 50)
+        # self.max_mana += random.randint(50, 150)
+        # self.agility += random.randint(10, 30)
 
 
 # 직업이랑 개네들 특수 능력 하기.
@@ -76,7 +92,7 @@ class Archer(Hero):     # 궁수
             return
         for i in range(2):
             if random.randint(1, 5+self.magic_power//5) >= 5:
-                print(f'마법의 힘으로 화살이 복사됐다. {i+1}개!')
+                print(f'마법의 힘으로 화살이 복사 됐다!추가공격!')
                 self.attack(other)
 
 

@@ -16,19 +16,19 @@ def main():
     acrhonym_to_class = {}
     for class_ in list_of_class:
         acrhonym_to_class[class_.__name__[0]] = class_
-    hero_entities[1] = hero_make(player_name, acrhonym_to_class)
+    hero_entities['1'] = hero_make(player_name, acrhonym_to_class)
     # 화면 전환
 
     # 동료 캐릭터 정하기
-    hero_entities[2] = hero_make(random_name(), acrhonym_to_class)
-    hero_entities[3] = hero_make(random_name(), acrhonym_to_class)
+    hero_entities['2'] = hero_make(random_name(), acrhonym_to_class)
+    hero_entities['3'] = hero_make(random_name(), acrhonym_to_class)
     # 화면 전환
 
     # 던전 입장(화면 전환)
 
-    # 전투 시작(3회 반복)
+    # 전투 시작(수 회 반복)
     total_reward = {0: 0}
-    for i in range(1):
+    for i in range(5):
         # 전투 상황 객체 만들기
         battle = BattleScene(hero_entities)
         # 전투 상황 객체 안의 함수가 작동되면서 전투가 진행되고 결과(리워드) 반환
